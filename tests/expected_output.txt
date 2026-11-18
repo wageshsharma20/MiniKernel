@@ -1,0 +1,135 @@
+  [ctor] Memory Manager ready: 16 blocks x 64 KB = 1024 KB
+  [ctor] Kernel booted. Default scheduler: Round Robin (quantum=2)
+
+=== Mini Kernel Simulator === (type 'help')
+
+kernel> Commands:
+  create <name> <burst> <memKB> [system]  create a process
+  ps                                      list all processes
+  kill <pid>                              terminate a process
+  sched fcfs | sched rr <quantum>         choose scheduler
+  run                                     run all READY processes
+  mem                                     show memory map
+  clean                                   remove TERMINATED processes
+  help                                    show this help
+  exit                                    shut down
+
+kernel>   [ctor] Process 1 (editor) created
+Created USER process P1(editor) with 128 KB.
+
+kernel>   [ctor] Process 2 (browser) created
+Created USER process P2(browser) with 200 KB.
+
+kernel>   [ctor] Process 3 (logger) created
+Created SYSTEM process P3(logger) with 64 KB.
+
+kernel> PID  NAME        TYPE    STATE       BURST  LEFT   MEM(KB) 
+1    editor      USER    READY       5      5      128     
+2    browser     USER    READY       3      3      200     
+3    logger      SYSTEM  READY       4      4      64      [protected]
+
+kernel> Memory map (each cell = 64 KB, '.' = free):
+  [P1 ][P1 ][P2 ][P2 ][P2 ][P2 ][P3 ][ . ][ . ][ . ][ . ][ . ][ . ][ . ][ . ][ . ]
+  Free: 576 KB / 1024 KB
+
+kernel> Permission denied: P3(logger) is a SYSTEM process.
+
+kernel> Killed P2(browser). Memory released.
+
+kernel> PID  NAME        TYPE    STATE       BURST  LEFT   MEM(KB) 
+1    editor      USER    READY       5      5      128     
+2    browser     USER    TERMINATED  3      3      200     
+3    logger      SYSTEM  READY       4      4      64      [protected]
+
+kernel> Memory map (each cell = 64 KB, '.' = free):
+  [P1 ][P1 ][ . ][ . ][ . ][ . ][P3 ][ . ][ . ][ . ][ . ][ . ][ . ][ . ][ . ][ . ]
+  Free: 832 KB / 1024 KB
+
+kernel> Running 2 process(es) using Round Robin (quantum=2):
+  t=0-2 : P1(editor) runs (remaining 3)
+  t=2-4 : P3(logger) runs (remaining 2)
+  t=4-6 : P1(editor) runs (remaining 1)
+  t=6-8 : P3(logger) runs and finishes
+  t=8-9 : P1(editor) runs and finishes
+
+  Process       Burst   Turnaround  Waiting
+  editor        5       9           4
+  logger        4       8           4
+  Average turnaround = 8.50, average waiting = 4.00
+All processes finished. Memory released.
+
+kernel> PID  NAME        TYPE    STATE       BURST  LEFT   MEM(KB) 
+1    editor      USER    TERMINATED  5      0      128     
+2    browser     USER    TERMINATED  3      3      200     
+3    logger      SYSTEM  TERMINATED  4      0      64      [protected]
+
+kernel>   [dtor] Process 1 (editor) destroyed
+  [dtor] Process 2 (browser) destroyed
+  [dtor] Process 3 (logger) destroyed
+Removed 3 terminated process(es).
+
+kernel> Error: not enough memory for 'big' (2000 KB requested).
+
+kernel> Error: burst time and memory must be positive.
+
+kernel> Error: no process with PID 99.
+
+kernel> Unknown command 'foo'. Type 'help'.
+
+kernel> Scheduler set to FCFS.
+
+kernel>   [ctor] Process 4 (A) created
+Created USER process P4(A) with 64 KB.
+
+kernel>   [ctor] Process 5 (B) created
+Created USER process P5(B) with 64 KB.
+
+kernel>   [ctor] Process 6 (C) created
+Created USER process P6(C) with 64 KB.
+
+kernel> Running 3 process(es) using FCFS:
+  t=0-6 : P4(A) runs and finishes
+  t=6-9 : P5(B) runs and finishes
+  t=9-11 : P6(C) runs and finishes
+
+  Process       Burst   Turnaround  Waiting
+  A             6       6           0
+  B             3       9           6
+  C             2       11          9
+  Average turnaround = 8.67, average waiting = 5.00
+All processes finished. Memory released.
+
+kernel> Scheduler set to Round Robin (quantum=2).
+
+kernel>   [ctor] Process 7 (A) created
+Created USER process P7(A) with 64 KB.
+
+kernel>   [ctor] Process 8 (B) created
+Created USER process P8(B) with 64 KB.
+
+kernel>   [ctor] Process 9 (C) created
+Created USER process P9(C) with 64 KB.
+
+kernel> Running 3 process(es) using Round Robin (quantum=2):
+  t=0-2 : P7(A) runs (remaining 4)
+  t=2-4 : P8(B) runs (remaining 1)
+  t=4-6 : P9(C) runs and finishes
+  t=6-8 : P7(A) runs (remaining 2)
+  t=8-9 : P8(B) runs and finishes
+  t=9-11 : P7(A) runs and finishes
+
+  Process       Burst   Turnaround  Waiting
+  A             6       11          5
+  B             3       9           6
+  C             2       6           4
+  Average turnaround = 8.67, average waiting = 5.00
+All processes finished. Memory released.
+
+kernel> Kernel shutting down...
+  [dtor] Process 4 (A) destroyed
+  [dtor] Process 5 (B) destroyed
+  [dtor] Process 6 (C) destroyed
+  [dtor] Process 7 (A) destroyed
+  [dtor] Process 8 (B) destroyed
+  [dtor] Process 9 (C) destroyed
+  [dtor] Memory Manager shut down

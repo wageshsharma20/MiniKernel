@@ -1,0 +1,28 @@
+help
+create editor 5 128
+create browser 3 200
+create logger 4 64 system
+ps
+mem
+kill 3
+kill 2
+ps
+mem
+run
+ps
+clean
+create big 10 2000
+create bad -1 64
+kill 99
+foo
+sched fcfs
+create A 6 64
+create B 3 64
+create C 2 64
+run
+sched rr 2
+create A 6 64
+create B 3 64
+create C 2 64
+run
+exit

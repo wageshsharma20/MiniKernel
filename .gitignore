@@ -1,0 +1,11 @@
+# Build artifacts & binaries
+minikernel
+*.o
+*.out
+
+# PDFs and binaries
+*.pdf
+
+# OS generated files
+.DS_Store
+._*
